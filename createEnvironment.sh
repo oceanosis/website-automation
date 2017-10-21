@@ -25,7 +25,7 @@ delete-stack()
 check-stack-status()
 {
 	while true; do
-		
+	
 		RUNSTAT=$(aws cloudformation describe-stacks --region="$region" --stack-name="$1" --query 'Stacks[*].[StackStatus]' --output text)
 		log "INFO $1 Creation Status: $RUNSTAT"
 		if [[ $RUNSTAT == *CREATE_COMPLETE* ]]; then
@@ -81,7 +81,7 @@ else
         exit 1
 fi
 
-# Update vpcid on subnet and vpc in igw-route
+# Update vpcid and subnetid
 sed -i 's/.*VpcId":.*/"VpcId": "'$VPCID'",/g' $basefld/$subfld/igw-route.json
 sed -i 's/.*SubnetId":.*/"SubnetId": "'$SUBNETID'",/g' $basefld/$subfld/igw-route.json
 log "INFO igw and routing templates are updated with VPCID and SubnetID"
@@ -105,6 +105,22 @@ TEMPLATE=security.json
 OUTPUT=$(create-stack $STACK $TEMPLATE)
 check-stack-status $STACK $OUTPUT
 
-log "INFO Whole VPC processes are done. "
+log "INFO Whole VPC processes are done. Now create EC2 instances... "
+
+SGID=$(aws ec2 describe-security-groups --region='eu-central-1' --filter Name=tag:Name,Values=CF-TEST --query 'SecurityGroups[*].[GroupId]' --output text)
+
+# Update SGID and SubnetID on EC2 json
+sed -i 's/.*SecurityGroupIds":.*/"SecurityGroupIds": ["'$SGID'"],/g' $basefld/$subfld/ec2.json
+sed -i 's/.*SubnetId":.*/"SubnetId": "'$SUBNETID'",/g' $basefld/$subfld/ec2.json
+log "INFO EC2 templates are updated with SGID and SubnetID"
+
+# Run Security Creation
+STACK=myEC2Stack
+TEMPLATE=ec2.json
+OUTPUT=$(create-stack $STACK $TEMPLATE)
+check-stack-status $STACK $OUTPUT
+
+log "INFO EC2 instance has created. DONE"
+
 
 exit 0
