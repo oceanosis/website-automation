@@ -24,7 +24,7 @@
     "AttachIGWtoVPC": {
       "Type": "AWS::EC2::VPCGatewayAttachment",
       "Properties": {
-        "VpcId": "vpc-1d0a0675",
+"VpcId": "vpc-123f337a",
         "InternetGatewayId": {
           "Ref": "InternetGateway"
         }
@@ -34,7 +34,7 @@
   "PublicRouteTable": {
     "Type": "AWS::EC2::RouteTable",
     "Properties": {
-      "VpcId": "vpc-1d0a0675",
+"VpcId": "vpc-123f337a",
       "Tags": [
           {
             "Key": "Application",
@@ -67,7 +67,7 @@
   "PublicSubnetRouteTableAssociation": {
     "Type": "AWS::EC2::SubnetRouteTableAssociation",
     "Properties": {
-      "SubnetId": "subnet-fde3f287", 
+"SubnetId": "subnet-438a9b39",
       "RouteTableId": {
         "Ref": "PublicRouteTable"
       }

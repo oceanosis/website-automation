@@ -19,6 +19,7 @@
          "ToPort" : "80",
          "CidrIp" : "0.0.0.0/0"
       }],
+"VpcId": "vpc-123f337a",
         "Tags": [
           {
             "Key": "Application",
@@ -30,13 +31,13 @@
             "Key": "Name",
             "Value": "CF-TEST"
           }
-        ],
-        "VpcId": "vpc-1d0a0675"
+        ]
       }
     },
     "PublicNACL": {
       "Type": "AWS::EC2::NetworkAcl",
       "Properties": {
+"VpcId": "vpc-123f337a",
         "Tags": [
           {
             "Key": "Application",
@@ -48,14 +49,13 @@
             "Key": "Name",
             "Value": "CF-TEST"
           }
-        ],
-        "VpcId": "vpc-1d0a0675"
+        ]
       }
     },
     "PublicNACLAssociation": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
-        "SubnetId": "subnet-fde3f287",
+"SubnetId": "subnet-438a9b39",
         "NetworkAclId": {
           "Ref": "PublicNACL"
         }
@@ -110,7 +110,7 @@
         "Icmp" : { "Code" : "-1", "Type" : "-1" },
         "Protocol": "6",
         "RuleAction": "Allow",
-        "RuleNumber": 10
+        "RuleNumber": 30
       }
     },
     "PublicNACLRule6": {
@@ -128,7 +128,7 @@
         "Icmp" : { "Code" : "-1", "Type" : "-1" },
         "Protocol": "6",
         "RuleAction": "Allow",
-        "RuleNumber": 10
+        "RuleNumber": 30
       }
     },
 
