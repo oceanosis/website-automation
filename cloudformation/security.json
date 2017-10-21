@@ -1,0 +1,174 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Public Security Assignments",
+  "Resources": {
+    "PublicSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupName": "CF-TEST",
+        "GroupDescription": "CF-TEST",
+	"SecurityGroupIngress" : [ {
+         "IpProtocol" : "tcp",
+         "FromPort" : "22",
+         "ToPort" : "22",
+         "CidrIp" : "0.0.0.0/0"
+      } ,
+	{
+         "IpProtocol" : "tcp",
+         "FromPort" : "80",
+         "ToPort" : "80",
+         "CidrIp" : "0.0.0.0/0"
+      }],
+        "Tags": [
+          {
+            "Key": "Application",
+            "Value": {
+              "Ref": "AWS::StackName"
+            }
+          },
+          {
+            "Key": "Name",
+            "Value": "CF-TEST"
+          }
+        ],
+        "VpcId": "vpc-1d0a0675"
+      }
+    },
+    "PublicNACL": {
+      "Type": "AWS::EC2::NetworkAcl",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Application",
+            "Value": {
+              "Ref": "AWS::StackName"
+            }
+          },
+          {
+            "Key": "Name",
+            "Value": "CF-TEST"
+          }
+        ],
+        "VpcId": "vpc-1d0a0675"
+      }
+    },
+    "PublicNACLAssociation": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "SubnetId": "subnet-fde3f287",
+        "NetworkAclId": {
+          "Ref": "PublicNACL"
+        }
+      }
+    },
+    "PublicNACLRule1": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "PublicNACL"
+        },
+        "CidrBlock": "0.0.0.0/0",
+        "PortRange": {
+          "From": "22",
+          "To": "22"
+        },
+	"Icmp" : { "Code" : "-1", "Type" : "-1" },
+        "Protocol": "6",
+        "RuleAction": "Allow",
+        "RuleNumber": 10
+      }
+    },
+    "PublicNACLRule2": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "PublicNACL"
+        },
+        "CidrBlock": "0.0.0.0/0",
+        "PortRange": {
+          "From": "22",
+          "To": "22"
+        },
+	"Egress" : "true",
+        "Icmp" : { "Code" : "-1", "Type" : "-1" },
+        "Protocol": "6",
+        "RuleAction": "Allow",
+        "RuleNumber": 10
+      }
+    },
+    "PublicNACLRule5": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "PublicNACL"
+        },
+        "CidrBlock": "0.0.0.0/0",
+        "PortRange": {
+          "From": "1024",
+          "To": "65535"
+        },
+        "Icmp" : { "Code" : "-1", "Type" : "-1" },
+        "Protocol": "6",
+        "RuleAction": "Allow",
+        "RuleNumber": 10
+      }
+    },
+    "PublicNACLRule6": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "PublicNACL"
+        },
+        "CidrBlock": "0.0.0.0/0",
+        "PortRange": {
+          "From": "1024",
+          "To": "65535"
+        },
+        "Egress" : "true",
+        "Icmp" : { "Code" : "-1", "Type" : "-1" },
+        "Protocol": "6",
+        "RuleAction": "Allow",
+        "RuleNumber": 10
+      }
+    },
+
+    "PublicNACLRule3": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "PublicNACL"
+        },
+        "CidrBlock": "0.0.0.0/0",
+        "Icmp" : { "Code" : "-1", "Type" : "-1" },
+        "PortRange": {
+          "From": "80",
+          "To": "80"
+        },
+        "Protocol": "6",
+        "RuleAction": "Allow",
+        "RuleNumber": 20
+      }
+    },
+
+    "PublicNACLRule4": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "PublicNACL"
+        },
+        "CidrBlock": "0.0.0.0/0",
+	"Icmp" : { "Code" : "-1", "Type" : "-1" },
+	"Egress" : "true",
+        "PortRange": {
+          "From": "80",
+          "To": "80"
+        },
+        "Protocol": "6",
+        "RuleAction": "Allow",
+        "RuleNumber": 20
+      }
+    }
+
+
+  }
+}

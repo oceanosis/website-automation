@@ -1,0 +1,78 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Create Internet Gateway",
+  "Resources": {
+
+    "InternetGateway": {
+      "Type": "AWS::EC2::InternetGateway",
+	 "Properties": {
+	"Tags": [
+          {
+            "Key": "Application",
+            "Value": {
+              "Ref": "AWS::StackName"
+            }
+          },
+          {
+            "Key": "Name",
+            "Value": "CF-TEST"
+          }
+        ]
+	 }
+    },
+
+    "AttachIGWtoVPC": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": "vpc-1d0a0675",
+        "InternetGatewayId": {
+          "Ref": "InternetGateway"
+        }
+    }
+   },
+
+  "PublicRouteTable": {
+    "Type": "AWS::EC2::RouteTable",
+    "Properties": {
+      "VpcId": "vpc-1d0a0675",
+      "Tags": [
+          {
+            "Key": "Application",
+            "Value": {
+              "Ref": "AWS::StackName"
+            }
+          },
+          {
+            "Key": "Name",
+            "Value": "CF-TEST"
+          }
+        ]
+      }
+   },
+
+  "PublicRouteIGWAssociation": {
+    "Type": "AWS::EC2::Route",
+    "DependsOn": "AttachIGWtoVPC",
+    "Properties": {
+      "RouteTableId": {
+        "Ref": "PublicRouteTable"
+      },
+      "DestinationCidrBlock": "0.0.0.0/0",
+      "GatewayId": {
+        "Ref": "InternetGateway"
+      } 
+    }
+  },
+
+  "PublicSubnetRouteTableAssociation": {
+    "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    "Properties": {
+      "SubnetId": "subnet-fde3f287", 
+      "RouteTableId": {
+        "Ref": "PublicRouteTable"
+      }
+    }
+  }
+
+  }
+}
