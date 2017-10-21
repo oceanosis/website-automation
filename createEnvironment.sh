@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 # Create AWS VPC by using CloudFormation templates 
+# Using bash script instead of using nested templates.
 
 log () 
 { TIME=`date "+%Y-%m-%d %H:%M:%S"`
