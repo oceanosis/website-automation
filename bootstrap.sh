@@ -19,6 +19,7 @@ git checkout -b stable-2.0 origin/stable-2.0
 git submodule update --init --recursive
 make install
 echo "export PATH=$PATH:/usr/local/bin" >> /root/.bash_profile
+source /root/.bash_profile
 
 # create aws environment
 cd /usr/local/src
