@@ -1,18 +1,31 @@
 {
-   "AWSTemplateFormatVersion" : "2010-09-09",
-   "Description" : "VPC Creation",
-   "Resources" : {
- 	"VPC" : {
- 		"Type" : "AWS::EC2::VPC",
-		"Properties" : {
-			"EnableDnsSupport" : "true",
-			"EnableDnsHostnames" : "true",
-			"CidrBlock" : "10.0.0.0/16",
-			 "Tags" : [
-				 { "Key" : "Application", "Value" : { "Ref" : "AWS::StackName" } },
-				 { "Key" : "Network", "Value" : "Public" }
- 				  ]
-			}
- 		}
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "VPC Creation",
+    "Resources": {
+        "VPC": {
+            "Type": "AWS::EC2::VPC",
+            "Properties": {
+                "EnableDnsSupport": "true",
+                "EnableDnsHostnames": "true",
+                "CidrBlock": "10.0.0.0/16",
+                "Tags": [
+                    {
+                        "Key": "Application",
+                        "Value": {
+                            "Ref": "AWS::StackName"
+                        }
+                    },
+                    {
+                        "Key": "Network",
+                        "Value": "Public"
+                    },
+			                    {
+                        "Key": "Name",
+                        "Value": "CF-TEST"
+                    }
+
+                ]
+            }
+	  }
 	}
 }
