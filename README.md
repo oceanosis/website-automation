@@ -1,2 +1,3 @@
 # website-automation
-Website Automation Test on AWS by using CloudFormation and Ansible
+Website Automation Test on AWS by using Bash Automation Scripts, CloudFormation Templates and Ansible playbooks
+
