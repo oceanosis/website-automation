@@ -1,0 +1,41 @@
+---
+
+- hosts: all
+  vars:
+    site_title: "Test"
+
+  pre_tasks:
+    - name: Update APT cache
+      apt:
+        update_cache: True
+    - name: Install Python 2
+      raw: test -e /usr/bin/python || apt-get install -y python
+ 
+  tasks:
+    - name: install apache2
+      package: name=apache2 state=latest
+
+    - name: install php7.0
+      package: name=php7.0 state=present
+
+    - name: Copy index.php
+      template:
+         src: "templates/index.php"
+         dest: "/var/www/html/"
+      notify:
+      - Restart apache
+
+    - name: remove html file
+      file: 
+         path: '{{ item }}' 
+         state: 'absent'
+      with_items:
+          - "/var/www/html/index.html"
+          - "/var/www/html/index.nginx-debian.html"
+ 
+  handlers:
+   - name: Restart apache
+     service:
+       name: 'apache2'
+       state: 'restarted'
+
