@@ -24,9 +24,12 @@ source /root/.bash_profile
 # create aws environment
 cd /usr/local/src
 git clone https://github.com/oceanosis/website-automation
-cd website-automation
-/usr/local/src/website-automation/createEnvironment.sh >> /usr/local/src/website-automation/automation.log
+WEB=/usr/local/src/website-automation
 
+cd $WEB
+# Type of automation: Bash, Ansible, Pyhton : change medhodology
+# RunWithBash
+./RunwithBash/createEnvironment.sh >> /usr/local/src/automation-$(date "+%Y-%m-%d %H:%M:%S").log
 NEWWEBSERVERIP=$(aws ec2 describe-instances --region='eu-central-1' --filter Name=tag:Server,Values=Web1  --query "Reservations[*].Instances[*].PublicIpAddress" --output=text)
 
 # install apps and deploy website via ansible
