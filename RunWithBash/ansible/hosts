@@ -1,2 +1,2 @@
 [webservers]
-34.229.220.169
+web1 ansible_ssh_host=34.229.220.169 
