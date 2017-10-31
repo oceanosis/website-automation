@@ -1,0 +1,47 @@
+---
+- name: COMMON | Get hostname
+  raw: "hostname" 
+  register: hostname
+
+- debug:
+     msg: "Hostname: {{ hostname }}"
+
+- name: 1.Check if EPEL repo is already configured.
+  stat: path={{ epel_repofile_path }}
+  register: epel_repofile_result
+ 
+- name: 2.Install EPEL repo.
+  yum:
+    name: "{{ epel_repo_url }}"
+    state: present
+  register: result
+  when: not epel_repofile_result.stat.exists
+ 
+- name: 3.Import EPEL GPG key.
+  rpm_key:
+    key: "{{ epel_repo_gpg_key_url }}"
+    state: present
+  when: not epel_repofile_result.stat.exists
+
+- name: COMMON | Upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+    update_cache: yes
+    exclude: kernel*,php*
+
+- name: COMMON | Install basic packages
+  yum: name={{ item }} state=present
+  with_items:
+     - vim
+     - nano
+     - curl
+
+- name: COMMON | Create test directory
+  file:
+    path: /tmp/test
+    state: directory
+    mode: 0755
+
+- name: COMMON | Copy files
+  copy: src=test dest=/tmp/  directory_mode=yes owner=root group=root mode=0644

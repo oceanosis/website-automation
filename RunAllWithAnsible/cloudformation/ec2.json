@@ -1,0 +1,86 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "EC2 Creation",
+  "Parameters": {
+    "InstanceType": {
+      "Description": "Type of EC2 instance to launch",
+      "Type": "String",
+      "Default": "t2.micro",
+      "AllowedValues": [
+        "t2.micro"
+      ],
+      "ConstraintDescription": "Must be a valid EC2 instance type"
+    },
+    "KeyName": {
+      "Description": "Key Pair Name",
+      "Type": "String",
+      "Default": "Automation-Test"
+    }
+  },
+  "Resources": {
+    "MyEC2Instance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "ImageId": "ami-c998b6b2",
+        "KeyName": {
+          "Ref": "KeyName"
+        },
+        "InstanceType": {
+          "Ref": "InstanceType"
+        },
+"SubnetId": {"Fn::ImportValue" : {"Fn::Sub" : "SubnetID"}},
+"SecurityGroupIds": [{"Fn::ImportValue" : {"Fn::Sub" : "SGID"}}],
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#!/bin/bash -xe\n",
+                "yum update -y\n",
+                "setenforce 0\n",
+                "sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config\n",
+                "# All other installations will be done by Ansible\n",
+                "reboot\n"
+              ]
+            ]
+          }
+        },
+        "Tags": [
+          {
+            "Key": "Application",
+            "Value": {
+              "Ref": "AWS::StackName"
+            }
+          },
+          {
+            "Key": "Name",
+            "Value": "CF-TEST"
+          },
+          {
+            "Key": "Server",
+            "Value": "Web1"
+          }
+        ]
+      }
+    }
+},
+    "Outputs": {
+      "WebsiteURL": {
+        "Description": "URL for webserver",
+        "Value": {
+          "Fn::Join": [
+            "",
+            [
+              "http://",
+              {
+                "Fn::GetAtt": [
+                  "MyEC2Instance",
+                  "PublicDnsName"
+                ]
+              }
+            ]
+          ]
+        }
+      }
+    }
+}
