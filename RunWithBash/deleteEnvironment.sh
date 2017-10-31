@@ -9,7 +9,7 @@ log ()
 
 # Be careful on changing variables
 # Variables
-region="eu-central-1"
+region="us-east-1"
 basedir="/usr/local/src/website-automation/RunWithBash"
 cf="cloudformation"
 
@@ -30,7 +30,7 @@ check-stack-status()
 
 delete-stack()
 {
-	aws cloudformation delete-stack --stack-name $1 --region="$region" 2>&1
+	aws cloudformation delete-stack --stack-name $1 --region="$region" > /dev/null 2>&1
 }
 
 retrieve-stack-list()

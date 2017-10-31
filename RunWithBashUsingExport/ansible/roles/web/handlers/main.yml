@@ -1,0 +1,15 @@
+---
+- name: start apache
+  service: name=httpd state=running enabled=yes
+
+- name: stop apache
+  service: name=httpd state=stopped
+
+- name: restart apache
+  service: name=httpd state=restarted 
+
+- name: restart network
+  service:
+    name: network
+    state: restarted
+
