@@ -38,7 +38,7 @@ cd $WEB
 REGION="us-east-1"
 DATE=$(date "+%Y-%m-%d-%H-%M-%S")
 cd RunWithBash
-./createEnvironment.sh $REGION >> /usr/local/src/automation-$DATE.log
+./createEnvironment.sh $REGION > /usr/local/src/automation-$DATE.log
 if [ $? -ne 0 ];then
 exit 1
 fi
@@ -48,6 +48,7 @@ NEWWEBSERVERIP=$(aws ec2 describe-instances --region="$REGION" --filter Name=tag
 
 # Copy Automation-Test.pem and use ssh agent forwarding
 aws s3 cp s3://automation-test-dumlu/Automation-Test.pem /root/.ssh/
+#aws s3 rm s3://automation-test-dumlu/Automation-Test.pem
 chmod 400 /root/.ssh/Automation-Test.pem
 eval $(ssh-agent)
 ssh-add -k /root/.ssh/Automation-Test.pem
@@ -58,7 +59,7 @@ export PATH=$PATH:/usr/local/bin
 export ANSIBLE_HOST_KEY_CHECKING=False
 echo "[webservers]" > ./hosts
 echo $NEWWEBSERVERIP >> ./hosts
-ansible webservers -a "cat /etc/hostname" -i hosts
+ansible webservers -a "cat /etc/hostname" -i hosts -u ec2-user
 DATE=$(date "+%Y-%m-%d-%H-%M-%S")
-ansible-playbook web-automation.yml -i hosts >> /usr/local/src/ansible-$DATE.log
+ansible-playbook web-automation.yml -i hosts -u ec2-user > /usr/local/src/ansible-$DATE.log
 # 
