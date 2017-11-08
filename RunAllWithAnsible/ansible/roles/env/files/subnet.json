@@ -1,0 +1,37 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Create Subnet",
+  "Resources": {
+    "PublicSubnet": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+	"VpcId": {"Fn::ImportValue" : {"Fn::Sub" : "VpcId"}},
+        "CidrBlock": "10.0.0.0/24",
+	"MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "Application",
+            "Value": {
+              "Ref": "AWS::StackName"
+            }
+          },
+          {
+            "Key": "Network",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "CF-TEST"
+          }
+        ]
+      }
+    }
+  },
+ "Outputs" : {
+  "PublicSubnet" : {
+    "Description" : "The subnet ID to use for public web servers",
+    "Value" :  { "Ref" : "PublicSubnet" },
+    "Export" : { "Name" : {"Fn::Sub": "SubnetID" }}
+    }
+  }
+}
