@@ -10,7 +10,13 @@ log ()
 
 # Be careful on changing variables
 # Variables
-region="us-east-1"
+if [ -n "$1" ]; then
+echo "REGION parameter is missing"
+exit 1
+fi
+
+region=$1
+
 basedir="/usr/local/src/website-automation/RunWithBashUsingExport"
 cf="cloudformation"
 

@@ -29,7 +29,7 @@ cd /usr/local/src
 git clone https://github.com/oceanosis/website-automation
 
 ###################################################################
-# Type of automation is Bash + CloudFormation + Ansible           #
+# Type of automation: Bash, Ansible, Pyhton : change medhodology  #
 ###################################################################
 cat >> /root/.bash_profile <<EOL
 if [ -z "\$SSH_AUTH_SOCK" ] ; then
