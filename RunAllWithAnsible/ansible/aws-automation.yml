@@ -1,0 +1,30 @@
+---
+# AWS tasks are run 'locally'
+
+# Authentication details should be passed in as arguments or exported in the shell before running this playbook
+# Ideally they should be stored in Hashicorp's 'Vault'
+# e.g.
+# export AWS_ACCESS_KEY_ID=''
+# export AWS_SECRET_ACCESS_KEY=''
+#
+# Finally, run with `ansible-playbook aws.yml`
+
+- name: Create AWS Infrastructure
+  hosts: localhost
+  connection: local
+  gather_facts: False
+
+- name: VPC Creation
+  cloudformation:
+    stack_name: "{{ vpc_stack }}"
+    state: "present"
+    region: "{{ region }}"
+    disable_rollback: true
+    template: "files/vpc.json"
+  args:
+    template_parameters:
+      KeyName: udumlu
+  register: "vpc_stack"
+
+- name: Show VPC stack outputs
+  debug: msg="{{ vpc_stack }} outputs are {{ vpc_stack.stack_outputs }}"

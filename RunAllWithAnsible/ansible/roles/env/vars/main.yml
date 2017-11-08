@@ -1,1 +1,9 @@
 ---
+
+region: us-east-1
+
+vpc_stack: myVPC
+subnet_stack: myPublicSubnet
+igw_stack: myIGW_Routing
+sec_stack: mySecuritySettings
+ec2_stack: myWebServers
