@@ -13,18 +13,6 @@
   hosts: localhost
   connection: local
   gather_facts: False
+  roles:
+    - env
 
-- name: VPC Creation
-  cloudformation:
-    stack_name: "{{ vpc_stack }}"
-    state: "present"
-    region: "{{ region }}"
-    disable_rollback: true
-    template: "files/vpc.json"
-  args:
-    template_parameters:
-      KeyName: udumlu
-  register: "vpc_stack"
-
-- name: Show VPC stack outputs
-  debug: msg="{{ vpc_stack }} outputs are {{ vpc_stack.stack_outputs }}"

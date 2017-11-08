@@ -1,1 +1,14 @@
 ---
+
+- name: VPC Creation
+  cloudformation:
+    stack_name: "{{ vpc_stack }}"
+    state: "present"
+    region: "{{ region }}"
+    disable_rollback: true
+    template: "roles/env/files/vpc.json"
+  register: "vpc_stack"
+
+- name: Show VPC stack outputs
+  debug: msg="Stack outputs are {{ vpc_stack.stack_outputs }}"
+
