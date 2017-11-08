@@ -11,7 +11,7 @@ log ()
 # Variables
 # Be careful on changing variables
 # Variables
-if [ -n "$1" ]; then
+if [ -z "$1" ]; then
 echo "REGION parameter is missing"
 exit 1
 fi
