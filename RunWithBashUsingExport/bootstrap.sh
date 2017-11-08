@@ -67,11 +67,9 @@ echo "[webservers]" > ./hosts
 echo $NEWWEBSERVERIP >> ./hosts
 sleep 60 # wait for ssh start
 ansible webservers -a "cat /etc/hostname" -i hosts -u ec2-user
-DATE=$(date "+%Y-%m-%d-%H-%M-%S")
-ansible-playbook web-automation.yml -i hosts -u ec2-user > /usr/local/src/ansible-$DATE.log
-if [ $? -ne 0 ]; then
-ansible-playbook web-automation.yml -i hosts -u ec2-user > /usr/local/src/ansible-$DATE.log
-else
+ansible-playbook web-automation.yml -i hosts -u ec2-user >> /usr/local/src/automation-$DATE.log
+if [[ $? -ne 0 ]]; then
 echo "Ansible playbook did not completed. Check process and errors in log"
+exit 1
 fi
 # 

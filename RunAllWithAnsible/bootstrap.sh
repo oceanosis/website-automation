@@ -49,7 +49,7 @@ export AWS_ACCESS_KEY_ID='AK123'
 export AWS_SECRET_ACCESS_KEY='abc123'
 
 ansible-playbook aws-automation.yml > /usr/local/src/ansible-$DATE.log
-if [ $? -ne 0 ]; then
+if [[ $? -ne 0 ]]; then
 echo "Ansible playbook did not completed. Check process and errors in log"
 exit 1
 fi
@@ -64,7 +64,7 @@ if [ -z "\$SSH_AUTH_SOCK" ] ; then
 fi
 EOL
 
-eval $(ssh-agent -s)
+eval $(ssh-agent)
 
 REGION="us-east-1"
 DATE=$(date "+%Y-%m-%d-%H-%M-%S")
@@ -88,7 +88,7 @@ sleep 60 # wait for ssh start
 ansible webservers -a "cat /etc/hostname" -i hosts -u ec2-user
 
 ansible-playbook web-automation.yml -i hosts -u ec2-user >> /usr/local/src/ansible-$DATE.log
-if [ $? -ne 0 ]; then
+if [[ $? -ne 0 ]]; then
 echo "Ansible playbook did not completed. Check process and errors in log"
 exit 1
 fi
