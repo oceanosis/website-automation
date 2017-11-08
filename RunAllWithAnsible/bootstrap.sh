@@ -45,8 +45,11 @@ DATE=$(date "+%Y-%m-%d-%H-%M-%S")
 
 # Run environment creation with Ansible Cloud Modules
 # ansible-playbook 
-export AWS_ACCESS_KEY_ID='AK123'
-export AWS_SECRET_ACCESS_KEY='abc123'
+
+sed -i 's/.*region:.*/region: '$REGION'/g' $DIR/ansible/roles/env/vars/main.yml
+
+export AWS_ACCESS_KEY_ID='AKIAIUUDAC4M5NPYNIEQ'
+export AWS_SECRET_ACCESS_KEY='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'
 
 ansible-playbook aws-automation.yml > /usr/local/src/ansible-$DATE.log
 if [[ $? -ne 0 ]]; then
@@ -66,9 +69,6 @@ EOL
 
 eval $(ssh-agent)
 
-REGION="us-east-1"
-DATE=$(date "+%Y-%m-%d-%H-%M-%S")
-
 # For only one server... ( will be changed )
 NEWWEBSERVERIP=$(aws ec2 describe-instances --region="$REGION" --filter Name=tag:Server,Values=Web1  --query "Reservations[*].Instances[*].PublicIpAddress" --output=text)
 
@@ -76,6 +76,7 @@ NEWWEBSERVERIP=$(aws ec2 describe-instances --region="$REGION" --filter Name=tag
 aws s3 cp s3://automation-test-dumlu/Automation-Test.pem /tmp/
 #aws s3 rm s3://automation-test-dumlu/Automation-Test.pem
 #
+chmod 400 /tmp/Automation-Test.pem
 ssh-add -k /tmp/Automation-Test.pem
 #
 ## Install apps and deploy website via ansible
