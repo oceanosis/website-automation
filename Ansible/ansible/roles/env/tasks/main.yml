@@ -1,0 +1,61 @@
+---
+
+- name: VPC Creation
+  cloudformation:
+    stack_name: "{{ vpc_stack }}"
+    state: "present"
+    region: "{{ region }}"
+    disable_rollback: true
+    template: "roles/env/files/vpc.json"
+  register: "vpc_stack"
+
+- name: Show VPC stack outputs
+  debug: msg="Stack outputs are {{ vpc_stack.stack_outputs }}"
+
+- name: Subnet Creation
+  cloudformation:
+    stack_name: "{{ subnet_stack }}"
+    state: "present"
+    region: "{{ region }}"
+    disable_rollback: true
+    template: "roles/env/files/subnet.json"
+  register: "subnet_stack"
+
+- name: Show Subnet stack outputs
+  debug: msg="Stack outputs are {{ subnet_stack.stack_outputs }}"
+
+- name: IGW Route Creation
+  cloudformation:
+    stack_name: "{{ igw_stack }}"
+    state: "present"
+    region: "{{ region }}"
+    disable_rollback: true
+    template: "roles/env/files/igw_route.json"
+  register: "igw_stack"
+
+- name: Show IGW Route stack outputs
+  debug: msg="Stack outputs are {{ igw_stack.stack_outputs }}"
+
+- name: Security Creation
+  cloudformation:
+    stack_name: "{{ sec_stack }}"
+    state: "present"
+    region: "{{ region }}"
+    disable_rollback: true
+    template: "roles/env/files/security.json"
+  register: "sec_stack"
+
+- name: Show Security stack outputs
+  debug: msg="Stack outputs are {{ sec_stack.stack_outputs }}"
+
+- name: EC2 Creation
+  cloudformation:
+    stack_name: "{{ ec2_stack }}"
+    state: "present"
+    region: "{{ region }}"
+    disable_rollback: true
+    template: "roles/env/files/ec2.json"
+  register: "ec2_stack"
+
+- name: Show EC2 stack outputs
+  debug: msg="Stack outputs are {{ ec2_stack.stack_outputs }}"

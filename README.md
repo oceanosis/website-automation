@@ -1,5 +1,12 @@
-# website-automation
-Website Automation Test on AWS by using Bash Automation Scripts, CloudFormation Templates and Ansible playbooks (Python/Boto3 will be also added )
+# Automating a simple website on AWS by using different approaches
+This repo is simply to show how to provision cloud resources with different approaches
+
+Website Automation on AWS by using;
+ - Bash Automation Scripts
+ - CloudFormation Templates
+ - Ansible playbooks 
+ - Python/Boto3 
+ - Terraform 
 
 ## Environment Prerequsites
 1. Create repository on GitHub
@@ -17,10 +24,12 @@ Website Automation Test on AWS by using Bash Automation Scripts, CloudFormation 
 
 ***
 
-## Result
-> All infrastructure plus service installation plus deployments are done while automation server is launching...
+## Conclusion
+> All infrastructure resource provisioning, service installations and deployments are accomplished while automation server is launching.
 
-
+### TODO
+> Provisioning resources with Phyton/Boto3
+> Provisioning resources with Terraform 
 
 
 

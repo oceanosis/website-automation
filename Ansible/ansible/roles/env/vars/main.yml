@@ -1,0 +1,9 @@
+---
+
+region: aaa
+
+vpc_stack: myVPC
+subnet_stack: myPublicSubnet
+igw_stack: myIGWRouting
+sec_stack: mySecuritySettings
+ec2_stack: myWebServers
